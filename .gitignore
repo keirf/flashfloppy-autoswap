@@ -1,0 +1,7 @@
+*.[oa]
+.*.d
+*~
+*.orig
+*.rej
+*.adf
+/kick/
