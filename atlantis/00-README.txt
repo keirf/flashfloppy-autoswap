@@ -1,6 +1,6 @@
-Indiana Jones and the Fate of Atlantis: FlashFloppy AutoSwap v1.0
+Indiana Jones and the Fate of Atlantis: FlashFloppy AutoSwap v1.1
 =================================================================
--- Keir Fraser, 22nd January 2019
+-- Keir Fraser, 23rd January 2019
 
 Introduction
 ------------
