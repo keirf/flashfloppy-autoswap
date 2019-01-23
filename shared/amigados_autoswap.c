@@ -437,7 +437,7 @@ static struct da_status_sector *read_status(bool_t reseek)
     return NULL;
 }
 
-static void disk_busy(bool_t lock)
+static LONG send_dos_msg(LONG type, LONG arg)
 {
     struct Process *tsk = (struct Process *)FindTask(NULL);
     struct StandardPacket *pk = (struct StandardPacket *)track_buffer;
@@ -447,39 +447,40 @@ static void disk_busy(bool_t lock)
     pk->sp_Msg.mn_Node.ln_Name = (char *)&pk->sp_Pkt;
     pk->sp_Pkt.dp_Link = &pk->sp_Msg;
     pk->sp_Pkt.dp_Port = &tsk->pr_MsgPort;
-    pk->sp_Pkt.dp_Type = ACTION_INHIBIT;
-    pk->sp_Pkt.dp_Arg1 = lock ? -1L : 0L;
+    pk->sp_Pkt.dp_Type = type;
+    pk->sp_Pkt.dp_Arg1 = arg;
 
     PutMsg(DeviceProc((STRPTR)ff_unit_name), (struct Message *)pk);
     WaitPort(&tsk->pr_MsgPort);
     GetMsg(&tsk->pr_MsgPort);
+
+    return pk->sp_Pkt.dp_Res1;
+}
+
+static void disk_busy(bool_t lock)
+{
+    if (lock)
+        send_dos_msg(ACTION_FLUSH, 0);
+    send_dos_msg(ACTION_INHIBIT, lock ? DOSTRUE : DOSFALSE);
 }
 
 static char *current_volume(void)
 {
-    struct Process *tsk = (struct Process *)FindTask(NULL);
-    struct StandardPacket *pk = (struct StandardPacket *)track_buffer;
     struct DeviceList *dl;
     char *bname, *cname;
+    uint8_t len;
+    LONG res;
 
-    memset(pk, 0, sizeof(*pk));
-
-    pk->sp_Msg.mn_Node.ln_Name = (char *)&pk->sp_Pkt;
-    pk->sp_Pkt.dp_Link = &pk->sp_Msg;
-    pk->sp_Pkt.dp_Port = &tsk->pr_MsgPort;
-    pk->sp_Pkt.dp_Type = ACTION_CURRENT_VOLUME;
-
-    PutMsg(DeviceProc((STRPTR)ff_unit_name), (struct Message *)pk);
-    WaitPort(&tsk->pr_MsgPort);
-    GetMsg(&tsk->pr_MsgPort);
-
-    dl = (struct DeviceList *)(pk->sp_Pkt.dp_Res1 << 2);
+    res = send_dos_msg(ACTION_CURRENT_VOLUME, 0);
+    dl = (struct DeviceList *)(res << 2);
     if (dl == NULL)
         return NULL;
+
     bname = (char *)(dl->dl_Name << 2);
     cname = (char *)track_buffer;
-    memcpy(cname, &bname[1], (uint8_t)bname[0]);
-    cname[(uint8_t)bname[0]] = '\0';
+    len = bname[0];
+    memcpy(cname, &bname[1], len);
+    cname[len] = '\0';
     return cname;
 }
 
