@@ -1,5 +1,5 @@
 /atlantis_autoswap
-/atlantis_autoswap_setpatch
+/atlantis_autoswap_*
 /startup-sequence
 /libnix.c
 /crc.c

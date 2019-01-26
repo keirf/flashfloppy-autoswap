@@ -37,28 +37,33 @@ all: atlantis_01.adf
 	cp 00-README.txt $(TARGET)/.
 	zip -r $(TARGET)-$(VER).zip $(TARGET)
 
-atlantis_01.adf: AtlantisOrig/atlantis_01.adf atlantis_autoswap_setpatch atlantis_autoswap
+atlantis_01.adf: AtlantisOrig/atlantis_01.adf atlantis_autoswap
 	xdftool AtlantisOrig/atlantis_01.adf unpack .
 	rm -f atlantis1/*nstall* atlantis1/.info atlantis1/c/iconx
 	rm -f atlantis1/c/*.info atlantis1/*.info atlantis1/c/ask
-	cp atlantis_autoswap_setpatch atlantis1/c/.
 	cp atlantis_autoswap atlantis1/c/.
-	sed -e 's/stack/echo "Atlantis FlashFloppy AutoSwap $(VER)"\nc:atlantis_autoswap_setpatch\nstack/' -i atlantis1/s/startup-sequence
+	sed -e 's/stack/echo "Atlantis FlashFloppy AutoSwap $(VER)"\nc:atlantis_autoswap\nstack/' -i atlantis1/s/startup-sequence
 	$(PYTHON) ./crack_atlantis.py atlantis1/atlantis.001
 	rm -rf $@
 	xdftool $@ pack atlantis1
 	rm -rf atlantis1*
 
-atlantis_autoswap_setpatch: atlantis_autoswap_setpatch.o
+atlantis_autoswap: atlantis_autoswap_1 atlantis_autoswap_2
+	$(PYTHON) ../shared/hunk_cat.py -o $@ $^
+
+atlantis_autoswap_1: atlantis_autoswap_entry.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-atlantis_autoswap: atlantis_autoswap_entry.o atlantis_autoswap.o libnix.o crc.o
+atlantis_autoswap_2: atlantis_autoswap.o libnix.o crc.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 libnix.c: ../shared/libnix.c
 	ln -sf $< $@
 
 crc.c: ../shared/crc.c
+	ln -sf $< $@
+
+atlantis_autoswap_entry.S: ../shared/amigados_autoswap_entry.S
 	ln -sf $< $@
 
 %.o: %.S
@@ -68,7 +73,7 @@ crc.c: ../shared/crc.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
-	rm -rf *.o *.adf atlantis_autoswap_setpatch atlantis_autoswap startup-sequence atlantis1* $(DEPS) $(TARGET)*
+	rm -rf *.o *.adf atlantis_autoswap startup-sequence atlantis1* $(DEPS) $(TARGET)* atlantis_autoswap_* crc.c libnix.c
 
 write: all
 	sudo mount /dev/sdd1 /mnt

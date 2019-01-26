@@ -9,6 +9,15 @@
  * See the file COPYING for more details, or visit <http://unlicense.org>.
  */
 
+asm (
+    "    .text\n"
+    "start:\n"
+    "    move.l  4,a6\n"
+    "    move.l  a6,_SysBase\n"
+    "    move.l  a1,_DOSBase\n"
+    "    jbra    _main\n"
+    );
+
 #include <proto/exec.h>
 #include <proto/dos.h>
 #include <proto/intuition.h>
@@ -37,6 +46,8 @@
 
 #define LONG_MAX 0x7fffffffl
 
+struct ExecBase      *SysBase;
+struct DosLibrary    *DOSBase;
 struct IntuitionBase *IntuitionBase;
 
 #define TRACK_BUFFER_SIZE 540
@@ -721,7 +732,7 @@ int main(void)
     uint32_t target;
     char *s, *volname;
     struct da_status_sector *dass;
-    int retries;
+    int unit, retries;
 
     dbg("** AutoSwap **\n");
 
@@ -731,9 +742,10 @@ int main(void)
         goto fail;
 
     /* Get the FlashFloppy drive number. */
-    ff_unit = get_ff_unit();
-    if (ff_unit < 0)
+    unit = get_ff_unit();
+    if (unit < 0)
         goto free_and_fail;
+    ff_unit = unit;
     ff_unit_name[2] = ff_unit + '0';
     dbg("Drive %s\n", ff_unit_name);
 

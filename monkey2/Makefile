@@ -37,26 +37,31 @@ all: mi2_01.adf
 	cp 00-README.txt $(TARGET)/.
 	zip -r $(TARGET)-$(VER).zip $(TARGET)
 
-mi2_01.adf: MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf mi2_autoswap_setpatch mi2_autoswap
+mi2_01.adf: MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf mi2_autoswap
 	cp MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf $@
-	xdftool $@ write mi2_autoswap_setpatch C
 	xdftool $@ write mi2_autoswap C
 	xdftool $@ read S/startup-sequence
-	sed -e 's/stack/echo "Monkey2 FlashFloppy AutoSwap $(VER)"\nc:mi2_autoswap_setpatch\nstack/' -i startup-sequence
+	sed -e 's/stack/echo "Monkey2 FlashFloppy AutoSwap $(VER)"\nc:mi2_autoswap\nstack/' -i startup-sequence
 	xdftool $@ delete S/startup-sequence
 	xdftool $@ write startup-sequence S
 	rm -f startup-sequence
 
-mi2_autoswap_setpatch: mi2_autoswap_setpatch.o
+mi2_autoswap: mi2_autoswap_1 mi2_autoswap_2
+	$(PYTHON) ../shared/hunk_cat.py -o $@ $^
+
+mi2_autoswap_1: mi2_autoswap_entry.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-mi2_autoswap: mi2_autoswap_entry.o mi2_autoswap.o libnix.o crc.o
+mi2_autoswap_2: mi2_autoswap.o libnix.o crc.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 libnix.c: ../shared/libnix.c
 	ln -sf $< $@
 
 crc.c: ../shared/crc.c
+	ln -sf $< $@
+
+mi2_autoswap_entry.S: ../shared/amigados_autoswap_entry.S
 	ln -sf $< $@
 
 %.o: %.S
@@ -66,7 +71,7 @@ crc.c: ../shared/crc.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
-	rm -rf *.o *.adf mi2_autoswap_setpatch mi2_autoswap startup-sequence $(DEPS) $(TARGET)*
+	rm -rf *.o *.adf mi2_autoswap startup-sequence $(DEPS) $(TARGET)* mi2_autoswap_* crc.c libnix.c
 
 write: all
 	sudo mount /dev/sdd1 /mnt

@@ -1,5 +1,5 @@
 /mi2_autoswap
-/mi2_autoswap_setpatch
+/mi2_autoswap_*
 /startup-sequence
 /libnix.c
 /crc.c
