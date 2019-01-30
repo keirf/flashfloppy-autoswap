@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = Monkey2-FFAS
-VER = v1.1
+VER = v1.2
 NAME_PREFIX = Monkey2 - 
 
 all: mi2_01.adf

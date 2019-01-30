@@ -57,7 +57,7 @@ def main(argv):
     hunk_sz = []
     hunk_nr = []
     for f in in_f:
-        (id, x, nr, first, last) = struct.unpack(">IIIII", f.read(5*4))
+        (id, x, nr, first, last) = struct.unpack(">5I", f.read(5*4))
         assert id == HUNK_HEADER
         assert x == 0
         assert first == 0
@@ -67,7 +67,7 @@ def main(argv):
             (sz,) = struct.unpack(">I", f.read(4))
             hunk_sz.append(sz)
     # Output concatenated hunk-size table.
-    out_f.write(struct.pack(">IIIII", HUNK_HEADER, 0, len(hunk_sz), 0,
+    out_f.write(struct.pack(">5I", HUNK_HEADER, 0, len(hunk_sz), 0,
                             len(hunk_sz)-1))
     for sz in hunk_sz:
         out_f.write(struct.pack(">I", sz))

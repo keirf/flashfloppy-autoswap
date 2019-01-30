@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = FateOfAtlantis-FFAS
-VER = v1.1
+VER = v1.2
 NAME_PREFIX = Atlantis - 
 
 all: atlantis_01.adf
