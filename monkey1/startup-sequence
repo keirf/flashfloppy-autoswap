@@ -1,0 +1,5 @@
+echo "The Secret of Monkey Island: FlashFloppy AutoSwap v1.3"
+c:mi1_autoswap
+stack > nil: 5000
+run >nil: <nil: Monkey_Island >nil: <nil:
+endcli >nil:

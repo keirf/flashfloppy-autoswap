@@ -24,22 +24,22 @@ all: atlantis_01.adf
 	mkdir -p $(TARGET)
 	xdftool "$(TARGET)/$(NAME_PREFIX)Save.adf" format "atlantis0"
 	cp $< "$(TARGET)/$(NAME_PREFIX)01.adf"
-	cp AtlantisOrig/atlantis_02.adf "$(TARGET)/$(NAME_PREFIX)02.adf"
-	cp AtlantisOrig/atlantis_03.adf "$(TARGET)/$(NAME_PREFIX)03.adf"
-	cp AtlantisOrig/atlantis_04.adf "$(TARGET)/$(NAME_PREFIX)04.adf"
-	cp AtlantisOrig/atlantis_05.adf "$(TARGET)/$(NAME_PREFIX)05.adf"
-	cp AtlantisOrig/atlantis_06.adf "$(TARGET)/$(NAME_PREFIX)06.adf"
-	cp AtlantisOrig/atlantis_07.adf "$(TARGET)/$(NAME_PREFIX)07.adf"
-	cp AtlantisOrig/atlantis_08.adf "$(TARGET)/$(NAME_PREFIX)08.adf"
-	cp AtlantisOrig/atlantis_09.adf "$(TARGET)/$(NAME_PREFIX)09.adf"
-	cp AtlantisOrig/atlantis_10.adf "$(TARGET)/$(NAME_PREFIX)10.adf"
-	cp AtlantisOrig/atlantis_11.adf "$(TARGET)/$(NAME_PREFIX)11.adf"
+	cp Orig/atlantis_02.adf "$(TARGET)/$(NAME_PREFIX)02.adf"
+	cp Orig/atlantis_03.adf "$(TARGET)/$(NAME_PREFIX)03.adf"
+	cp Orig/atlantis_04.adf "$(TARGET)/$(NAME_PREFIX)04.adf"
+	cp Orig/atlantis_05.adf "$(TARGET)/$(NAME_PREFIX)05.adf"
+	cp Orig/atlantis_06.adf "$(TARGET)/$(NAME_PREFIX)06.adf"
+	cp Orig/atlantis_07.adf "$(TARGET)/$(NAME_PREFIX)07.adf"
+	cp Orig/atlantis_08.adf "$(TARGET)/$(NAME_PREFIX)08.adf"
+	cp Orig/atlantis_09.adf "$(TARGET)/$(NAME_PREFIX)09.adf"
+	cp Orig/atlantis_10.adf "$(TARGET)/$(NAME_PREFIX)10.adf"
+	cp Orig/atlantis_11.adf "$(TARGET)/$(NAME_PREFIX)11.adf"
 	cp 00-README.txt $(TARGET)/.
 	zip -r $(TARGET)-$(VER).zip $(TARGET)
 
-atlantis_01.adf: AtlantisOrig/atlantis_01.adf atlantis_autoswap
+atlantis_01.adf: Orig/atlantis_01.adf atlantis_autoswap
 	rm -rf atlantis1*
-	xdftool AtlantisOrig/atlantis_01.adf unpack .
+	xdftool Orig/atlantis_01.adf unpack .
 	cp atlantis_autoswap atlantis1/c/.
 	sed -e 's/stack/echo "Atlantis FlashFloppy AutoSwap $(VER)"\nc:atlantis_autoswap\nstack/' -i atlantis1/s/startup-sequence
 	$(PYTHON) ./crack_atlantis.py atlantis1/atlantis.001

@@ -24,7 +24,7 @@ crack for the manual protection. The original images can be found in
 the SPS IPF library (number 851) but will require converting to ADF
 format using HxC software or
 [disk-analyse](https://www.github.com/keirf/Disk-Utilities).  The ADF
-images should be copied to the folder **atlantis/AlantisOrig/** in
+images should be copied to the folder **atlantis/Orig/** in
 this Git repository. The ADF files should be named
 atlantis_01.adf, atlantis_02.adf, and so on.
 
