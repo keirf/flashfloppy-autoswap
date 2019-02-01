@@ -1,6 +1,6 @@
-Monkey Island 2, LeChuck's Revenge: FlashFloppy AutoSwap v1.2
+Monkey Island 2, LeChuck's Revenge: FlashFloppy AutoSwap v1.3
 =============================================================
--- Keir Fraser, 27th January 2019
+-- Keir Fraser, 1st February 2019
 
 Introduction
 ------------

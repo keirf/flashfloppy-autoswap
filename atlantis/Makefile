@@ -1,7 +1,7 @@
 PREFIX = m68k-amigaos-
 CC = $(PREFIX)gcc
 AS = $(PREFIX)as
-PYTHON = python
+PYTHON = python3
 
 CFLAGS += -MMD -MF .$(@F).d
 DEPS = .*.d
@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = FateOfAtlantis-FFAS
-VER = v1.2
+VER = v1.3
 NAME_PREFIX = Atlantis - 
 
 all: atlantis_01.adf
@@ -38,12 +38,13 @@ all: atlantis_01.adf
 	zip -r $(TARGET)-$(VER).zip $(TARGET)
 
 atlantis_01.adf: AtlantisOrig/atlantis_01.adf atlantis_autoswap
+	rm -rf atlantis1*
 	xdftool AtlantisOrig/atlantis_01.adf unpack .
-	rm -f atlantis1/*nstall* atlantis1/.info atlantis1/c/iconx
-	rm -f atlantis1/c/*.info atlantis1/*.info atlantis1/c/ask
 	cp atlantis_autoswap atlantis1/c/.
 	sed -e 's/stack/echo "Atlantis FlashFloppy AutoSwap $(VER)"\nc:atlantis_autoswap\nstack/' -i atlantis1/s/startup-sequence
 	$(PYTHON) ./crack_atlantis.py atlantis1/atlantis.001
+	$(PYTHON) ../pack/pack_exe.py atlantis1/atlantis atlantis.pack
+	mv atlantis.pack atlantis1/atlantis
 	rm -rf $@
 	xdftool $@ pack atlantis1
 	rm -rf atlantis1*

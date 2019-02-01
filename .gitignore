@@ -5,3 +5,5 @@
 *.rej
 *.adf
 /kick/
+/pack
+/AutoSwap*

@@ -44,11 +44,20 @@ directory, for example:
  # make all -j8 PREFIX=$HOME/install
 ```
 
-The compiler must be on your PATH when you build the selector
-software:
+The compiler must be on your PATH when building other prerequisites
+and the game patches themselves:
 ```
  # export PATH=$HOME/install/bin:$PATH
 ```
+
+A further requirement is my Amiga file packer. This can be built
+in a local folder and does not require full installation:
+```
+ # git clone https://github.com/keirf/Amiga-Stuff.git
+ # cd Amiga-Stuff/inflate && make
+```
+
+You will also require Python v3.
 
 ## Building All Targets
 
@@ -56,5 +65,6 @@ Install prerequisites as above. Then:
 ```
  # git clone https://github.com/keirf/FF_AutoSwap.git
  # cd FF_AutoSwap
+ # ln -s path/to/Amiga-Stuff/inflate pack
  # make
 ```

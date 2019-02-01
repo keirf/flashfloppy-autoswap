@@ -1,7 +1,7 @@
 PREFIX = m68k-amigaos-
 CC = $(PREFIX)gcc
 AS = $(PREFIX)as
-PYTHON = python
+PYTHON = python3
 
 CFLAGS += -MMD -MF .$(@F).d
 DEPS = .*.d
@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = Monkey2-FFAS
-VER = v1.2
+VER = v1.3
 NAME_PREFIX = Monkey2 - 
 
 all: mi2_01.adf
@@ -38,13 +38,15 @@ all: mi2_01.adf
 	zip -r $(TARGET)-$(VER).zip $(TARGET)
 
 mi2_01.adf: MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf mi2_autoswap
-	cp MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf $@
-	xdftool $@ write mi2_autoswap C
-	xdftool $@ read S/startup-sequence
-	sed -e 's/stack/echo "Monkey2 FlashFloppy AutoSwap $(VER)"\nc:mi2_autoswap\nstack/' -i startup-sequence
-	xdftool $@ delete S/startup-sequence
-	xdftool $@ write startup-sequence S
-	rm -f startup-sequence
+	rm -rf "Monkey2 Disk 1"*
+	xdftool MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf unpack .
+	cp mi2_autoswap "Monkey2 Disk 1/c/."
+	sed -e 's/stack/echo "Monkey2 FlashFloppy AutoSwap $(VER)"\nc:mi2_autoswap\nstack/' -i "Monkey2 Disk 1/s/startup-sequence"
+	$(PYTHON) ../pack/pack_exe.py "Monkey2 Disk 1/monkey2" monkey2.pack
+	mv monkey2.pack "Monkey2 Disk 1/monkey2"
+	rm -rf $@
+	xdftool $@ pack "Monkey2 Disk 1"
+	rm -rf "Monkey2 Disk 1"*
 
 mi2_autoswap: mi2_autoswap_1 mi2_autoswap_2
 	$(PYTHON) ../shared/hunk_cat.py -o $@ $^
