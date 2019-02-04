@@ -9,7 +9,7 @@ DEPS = .*.d
 CFLAGS += -nostdlib -fno-builtin -I..
 CFLAGS += -Os -m68000 -Wall -Werror -std=gnu99 -msoft-float
 #CFLAGS += -msmall-code
-CFLAGS += -DDEBUG
+#CFLAGS += -DDEBUG
 LDFLAGS += $(CFLAGS) -s
 AFLAGS += $(CFLAGS) -D__ASSEMBLY__ -Wa,--register-prefix-optional
 AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
