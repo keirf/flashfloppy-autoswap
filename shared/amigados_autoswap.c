@@ -567,7 +567,7 @@ static bool_t disk_change(int disknr)
     }
     Permit();
 
-    dbg("Need=%u ", disknr);
+    dbg("Need=%d ", disknr);
 
     for (;;) {
 
@@ -577,7 +577,7 @@ static bool_t disk_change(int disknr)
         }
 
         cur_disknr = disknr_from_volname(volname);
-        dbg("Cur=%u ", cur_disknr);
+        dbg("Cur=%d ", cur_disknr);
         if (cur_disknr == -1) {
             dbg("Unknown Vol!\n");
             goto fail;
@@ -631,7 +631,7 @@ LIBHOOK(Open);
 void c_Open(uint32_t d1, uint32_t d2) attribute_used;
 void c_Open(uint32_t d1, uint32_t d2)
 {
-    char *p, *name = (char *)d1;
+    char *name = (char *)d1;
     int disknr;
 
     dbg("Open [%s] -> ", name);
@@ -644,12 +644,15 @@ void c_Open(uint32_t d1, uint32_t d2)
     if (!disk_change(disknr))
         goto out;
 
+#if PRISTINE_NAMEBUF != 1
     if (strncmp(name, "df", 2)) {
+        char *p;
         if (!(p = strchr(name, ':')))
             return;
         strcpy(name + 4, p + 1);
     }
     strncpy(name, ff_unit_name, 4);
+#endif
 
 out:
     dbg("[%s]\n", name);
