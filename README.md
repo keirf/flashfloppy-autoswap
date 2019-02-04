@@ -7,8 +7,30 @@ another OS) can likely be made to work quite easily.
 
 ## Original Disk Images
 
-Each patched title requires the original disk images. The exact naming is
-described for each title below:
+Each patched title requires the original disk images. The appropriate
+images can usually be found in the SPS IPF library (reference numbers
+indicated below) but will require converting to ADF format using HxC
+software or [disk-analyse](https://www.github.com/keirf/Disk-Utilities). 
+The required exact location and naming of ADF files is described for
+each title below:
+
+### Beneath a Steel Sky
+
+**SPS IPF 207**. The ADF images should be copied to the folder
+**bass/Orig/** in this Git repository. The ADF files should be named
+bass_00.adf, bass_01.adf, and so on.
+
+### Indiana Jones and the Fate of Atlantis
+
+**SPS IPF 851**. The ADF images should be copied to the folder
+**atlantis/Orig/** in this Git repository. The ADF files should be
+named atlantis_01.adf, atlantis_02.adf, and so on.
+
+### Secret of Monkey Island (Monkey Island 1)
+
+**SPS IPF 1625**. The ADF images should be copied to the
+folder **monkey1/Orig/** in this Git repository. The ADF files should
+be named mi_01.adf, mi_02.adf, and so on.
 
 ### Monkey Island 2
 
@@ -16,17 +38,6 @@ The Kixx release (manual protection removed) is recommended, as the
 AutoSwap patch does not include a crack. This can be found on the EAB
 FTP server or Google Drive, and simply be unzipped as-is into the
 **monkey2/** folder in this Git repository.
-
-### Indiana Jones and the Fate of Atlantis
-
-The original release is okay to use, as the AutoSwap patch includes a
-crack for the manual protection. The original images can be found in
-the SPS IPF library (number 851) but will require converting to ADF
-format using HxC software or
-[disk-analyse](https://www.github.com/keirf/Disk-Utilities).  The ADF
-images should be copied to the folder **atlantis/Orig/** in
-this Git repository. The ADF files should be named
-atlantis_01.adf, atlantis_02.adf, and so on.
 
 ## Building
 
