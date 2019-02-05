@@ -1,11 +1,85 @@
 
 # AutoSwap Game Patches for FlashFloppy
+## Build Instructions
 
 This project is cross-compiled on an x86 Ubuntu Linux system. However
 other similar Linux-base systems (or a Linux virtual environment on
 another OS) can likely be made to work quite easily.
 
-## Original Disk Images
+## Prerequisites
+
+### GCC v6 Cross Compiler
+
+Build and install bebbo's GCC v6 port for Amiga.  GCC has
+prerequisites that are listed in the
+[README](https://github.com/bebbo/amiga-gcc/blob/master/README.md),
+along with instructions on how to install them in various
+environments.  The build can be done to a private path in your home
+directory, for example:
+```
+ # cd $HOME
+ # mkdir -p install
+ # git clone https://github.com/bebbo/amiga-gcc
+ # cd amiga-gcc ; make update
+ # make all -j8 PREFIX=$HOME/install
+```
+
+The compiler must be on your PATH when building other prerequisites
+and the game patches themselves:
+```
+ # export PATH=$HOME/install/bin:$PATH
+```
+
+### Python v3 and packages
+
+Install Python v3 and the `crcmod` package. These can be
+installed on Ubuntu as follows:
+```
+ # sudo apt install python3 python3-pip
+ # pip3 install --user crcmod
+```
+
+### File packer
+
+Build and install my Amiga file packer. This can be built in a local
+folder and does not require full installation:
+```
+ # git clone https://github.com/keirf/Amiga-Stuff.git
+ # cd Amiga-Stuff/inflate && make
+```
+
+### xdftool: ADF image manipulation
+
+This requires Python, and the package itself can be installed via
+Python PIP. On Ubuntu for example:
+```
+ # sudo apt install python python-pip
+ # pip install --user amitools
+```
+
+### disk-analyse: Disk image transcoding
+
+If you are going to convert IPF images to ADF (see **Installing
+original disk images**, below) using my disk analyser, this must first
+be installed. Follow the instructions
+[here](https://www.github.com/keirf/Disk-Utilities/blob/master/README.md),
+paying particular attention to the section **IPF & CT Raw support**.
+
+IPF images can then be converted to ADF by:
+```
+ # disk-analyse in.ipf out.adf
+```
+
+## Creating the build tree
+
+Install prerequisites as above. Then:
+```
+ # git clone https://github.com/keirf/FF_AutoSwap.git
+ # cd FF_AutoSwap
+ # ln -s path/to/Amiga-Stuff/inflate pack
+```
+
+## Installing original disk images
 
 Each patched title requires the original disk images. The appropriate
 images can usually be found in the SPS IPF library (reference numbers
@@ -37,66 +111,14 @@ be named mi_01.adf, mi_02.adf, and so on.
 The Kixx release (manual protection removed) is recommended, as the
 AutoSwap patch does not include a crack. This can be found on the EAB
 FTP server or Google Drive, and simply be unzipped as-is into the
-**monkey2/** folder in this Git repository.
+**monkey2/** folder in this Git repository:
+**monkey2/MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf** and so on.
 
-## Building: Prerequisites
+## Building
 
-### GCC v6 Cross Compiler
-
-You must build and install bebbo's GCC v6 port for Amiga.  GCC has
-prerequisites that are listed in the
-[README](https://github.com/bebbo/amiga-gcc/blob/master/README.md),
-along with instructions on how to install them in various
-environments.  The build can be done to a private path in your home
-directory, for example:
+With everything set up, building the set of patched game titles for
+distribution is as simple as:
 ```
- # cd $HOME
- # mkdir -p install
- # git clone https://github.com/bebbo/amiga-gcc
- # cd amiga-gcc ; make update
- # make all -j8 PREFIX=$HOME/install
-```
-
-The compiler must be on your PATH when building other prerequisites
-and the game patches themselves:
-```
- # export PATH=$HOME/install/bin:$PATH
-```
-
-### Python v3 and packages
-
-You will also require Python v3 and the `crcmod` package. These can
-be installed on Ubuntu as follows:
-```
- # sudo apt install python3 python3-pip
- # pip3 install --user crcmod
-```
-
-### File packer
-
-A further requirement is my Amiga file packer. This can be built
-in a local folder and does not require full installation:
-```
- # git clone https://github.com/keirf/Amiga-Stuff.git
- # cd Amiga-Stuff/inflate && make
-
-```
-
-### xdftool
-
-This requires Python, and can be installed via Python PIP. On Ubuntu
-for example:
-```
- # sudo apt install python python-pip
- # pip install --user amitools
-```
-
-## Building All Targets
-
-Install prerequisites as above. Then:
-```
- # git clone https://github.com/keirf/FF_AutoSwap.git
  # cd FF_AutoSwap
- # ln -s path/to/Amiga-Stuff/inflate pack
- # make
+ # make dist
 ```
