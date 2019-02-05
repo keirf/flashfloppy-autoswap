@@ -31,9 +31,9 @@ automatically.
 -----------
 
 Steel Sky requires at least 1MB to run, however this is very tight and
-there are limitations imposed for A500/2000 with a 512kB "slow memory"
-trapdoor expansion: Specifically, the game will run from the internal
-drive only (DF0), and requires Kickstart 1.2 or 1.3.
+there are limitations imposed for A500/2000 with only 512k chip
+memory: Specifically, the game will run from the internal drive only
+(DF0), and requires Kickstart 1.2 or 1.3.
 
 External Drives
 ---------------

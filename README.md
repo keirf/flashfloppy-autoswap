@@ -39,7 +39,9 @@ AutoSwap patch does not include a crack. This can be found on the EAB
 FTP server or Google Drive, and simply be unzipped as-is into the
 **monkey2/** folder in this Git repository.
 
-## Building
+## Building: Prerequisites
+
+### GCC v6 Cross Compiler
 
 You must build and install bebbo's GCC v6 port for Amiga.  GCC has
 prerequisites that are listed in the
@@ -61,14 +63,33 @@ and the game patches themselves:
  # export PATH=$HOME/install/bin:$PATH
 ```
 
+### Python v3 and packages
+
+You will also require Python v3 and the `crcmod` package. These can
+be installed on Ubuntu as follows:
+```
+ # sudo apt install python3 python3-pip
+ # pip3 install --user crcmod
+```
+
+### File packer
+
 A further requirement is my Amiga file packer. This can be built
 in a local folder and does not require full installation:
 ```
  # git clone https://github.com/keirf/Amiga-Stuff.git
  # cd Amiga-Stuff/inflate && make
+
 ```
 
-You will also require Python v3.
+### xdftool
+
+This requires Python, and can be installed via Python PIP. On Ubuntu
+for example:
+```
+ # sudo apt install python python-pip
+ # pip install --user amitools
+```
 
 ## Building All Targets
 
