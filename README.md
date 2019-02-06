@@ -114,7 +114,7 @@ FTP server or Google Drive, and simply be unzipped as-is into the
 **monkey2/** folder in this Git repository:
 **monkey2/MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf** and so on.
 
-## Building
+## Building everything
 
 With everything set up, building the set of patched game titles for
 distribution is as simple as:
@@ -122,3 +122,17 @@ distribution is as simple as:
  # cd FF_AutoSwap
  # make dist
 ```
+
+## Building one title
+
+If you wish to build only one title then run make from the title's subfolder. For example:
+```
+ # cd monkey1 && make
+```
+
+#### Important Note
+
+* *Beneath a Steel Sky* and *Secret of Monkey Island* depend on Disk 1
+of *Indiana Jones and the Fate of Atlantis*. This must be installed
+at **atlantis/Orig/atlantis_01.adf** to successfully build these
+titles.
