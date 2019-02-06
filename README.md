@@ -136,3 +136,13 @@ If you wish to build only one title then run make from the title's subfolder. Fo
 of *Indiana Jones and the Fate of Atlantis*. This must be installed
 at **atlantis/Orig/atlantis_01.adf** to successfully build these
 titles.
+
+## Credits
+
+Thanks are due to:
+
+* **JOTD / WHDLoad** For his fixes and cracks, which I frequently borrowed
+in outline or literally lifted into my own patches.
+
+* **ross / EAB** For his *addchip* bootblock which reclaims valuable chip
+memory for larger titles on 512kB chip systems.
