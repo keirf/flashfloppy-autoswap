@@ -7,7 +7,12 @@
         move.w  d0,0xbda(a3)            /* moveq #<drive>,d0 */
         move.w  #0x4e71,0xbdc(a3)       /* nop */
 
-        move.w  #0x4e91,0x29c(a3)       /* jmp (a1) -> jsr (a1) */
+        /* Clobber ExecBase after loader and pretend to be a 68000
+         * (we disabled caches so no need for flushes). */
+        lea     0x294(a3),a0
+        move.l  #0x46b80004,(a0)+       /* not.l 4.w (clobber ExecBase) */
+        move.l  #0x72007200,(a0)+       /* moveq #0,d1 (fake AttnFlags) */
+        move.w  #0x4e91,(a0)+           /* jsr (a1) */
 
         lea.l   0xbc6(a3),a0
         move.w  #0x868,d0               /* ~3ms */
