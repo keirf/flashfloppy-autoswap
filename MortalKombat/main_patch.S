@@ -72,9 +72,15 @@ fix_copylock:
 
 fix_diskswap:
         movem.l d0-d4/a0-a6,-(sp)
+        lea.l   (0x7ccc0).l,a1   /* trackbuf */
+        move.l  locals+local_text(pc),a0
+        jsr     0x6e36(a0)       /* swizzle trackbuf */
+        move.l  a1,a0
         move.w  locals/*+local_drive*/(pc),d0
-        lea.l   (0x7ccc0).l,a0   /* trackbuf */
         jbsr    disk_swap
+        lea.l   (0x7ccc0).l,a1   /* trackbuf */
+        move.l  locals+local_text(pc),a0
+        jsr     0x6e42(a0)       /* unswizzle trackbuf */
         movem.l (sp)+,d0-d4/a0-a6
         rts
         

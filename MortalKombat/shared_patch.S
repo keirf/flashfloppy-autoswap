@@ -21,12 +21,9 @@ rnc_speed_patch:
         move.l  #0x3542ffea,0x22e(a0)   /* move.w d2,-0x16(a2) */
         /* Write sector-location patch into unused space (vline wait loop). */
         lea     rnc_decode_patch(pc),a1
-        lea     rnc_decode_patch_end(pc),a2
-        sub.l   a1,a2
-        move.l  a2,d0
-        subq.w  #1,d0
         lea     0x1b4(a0),a2
-1:      move.b  (a1)+,(a2)+
+        moveq   #(rnc_decode_patch_end-rnc_decode_patch)/2-1,d0
+1:      move.w  (a1)+,(a2)+
         dbf     d0,1b
         /* Patch sector-location code to run the below patch. */
         lea     0x114(a0),a1

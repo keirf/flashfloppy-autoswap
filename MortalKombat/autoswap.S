@@ -10,10 +10,10 @@
  */
 
 /* Local variables (a6 offsets). */
-#define loc_cyl      -1
-#define loc_drive    -2
-#define loc_disk     -3
-#define loc_mfm      -8
+#define as_cyl      -1
+#define as_drive    -2
+#define as_disk     -3
+#define as_chip     -8
 
 /* CIA registers (a5 offsets). */
 #define ciaapra      0xf01
@@ -37,7 +37,7 @@
 /* Direct Access: Status sector offsets. */
 #define da_sts_lba      20
 
-/* Chipmem buffer: Offsets (from loc_mfm). */
+/* Chipmem buffer: Offsets (from as_chip). */
 #define mfm_off        0
 #define crc_table_off  1080
 #define buffer_len     (1080+512) /* 1592 bytes */
@@ -65,7 +65,7 @@ _sel_name:
 1:      move.b  (a0)+,(a2)+
         jpl     1b              /* Copy up to '\xff' */
         moveq   #'0',d0
-        add.b   loc_disk(a6),d0
+        add.b   as_disk(a6),d0
         move.b  d0,-1(a2)       /* '\xff' -> Disk number */
 1:      move.b  (a0)+,(a2)+
         jne     1b
@@ -80,10 +80,10 @@ setup_state:
         addq.w  #3,d0
         lsl.b   d0,d2
         not.b   d2
-        move.b  d2,loc_drive(a6) /* CIAAPRA select mask */
-        move.b  d1,loc_disk(a6)
-        move.l  a0,loc_mfm(a6)
-        sf.b    loc_cyl(a6)
+        move.b  d2,as_drive(a6) /* CIAAPRA select mask */
+        move.b  d1,as_disk(a6)
+        move.l  a0,as_chip(a6)
+        sf.b    as_cyl(a6)
         lea     (0xDFF000).l,a4
         lea     (0xBFD100).l,a5
         /* Generate CRC table */
@@ -169,7 +169,7 @@ __set_lba:
          * Scratches a0-a2/d0-d4 */
 write_cmd:
         /* Create command sector. */
-        move.l  loc_mfm(a6),a2          /* a2 = buffer_start */
+        move.l  as_chip(a6),a2          /* a2 = buffer_start */
         lea     12(a2),a1               /* a1 = sync_start */
         move.w  #crc_table_off/4-1,d0
         moveq   #0,d1
@@ -189,7 +189,7 @@ write_cmd:
         move.l  a1,a0                   /* a0 = data to crc */
         moveq   #-1,d0                  /* d0.w = crc_in (0xffff) */
         move.w  #5+512,d1               /* d1.w = #bytes = header + data */
-        move.l  loc_mfm(a6),a1
+        move.l  as_chip(a6),a1
         lea.l   crc_table_off(a1),a1    /* a1 = crc_table */
         jbsr    crc16_ccitt
         move.b  d0,5+512+1(a0)          /* CRC.lo */
@@ -245,7 +245,7 @@ bin2mfm:
          * Turn on drive motor, wait for DSKRDY, or 500ms to pass.
          * Scratches: d0-d1 */
 motor_on:
-        move.b  loc_drive(a6),d1
+        move.b  as_drive(a6),d1
         ori.b   #0xF8,ciabprb(a5)
         andi.b  #0x7F,ciabprb(a5)
         and.b   d1,ciabprb(a5)
@@ -346,7 +346,7 @@ _retry_read_sector:
         jeq     _read_sector_out
         /* Read an IDAM or DAM. */
         moveq   #8,d0
-        move.l  loc_mfm(a6),a0
+        move.l  as_chip(a6),a0
         move.l  a0,a2
         jbsr    read
         /* Check the header we read. */
@@ -374,7 +374,7 @@ _retry_read_sector:
         /* Check CRC. */
         move.l  a0,a2
         subq.l  #4,a0
-        move.l  loc_mfm(a6),a1
+        move.l  as_chip(a6),a1
         lea.l   crc_table_off(a1),a1
         moveq   #-1,d0
         move.w  #4+512+2,d1
@@ -440,13 +440,13 @@ image_name:
 
 #if 0
 dbg_putch:
-        move.w  #0x1e,0x32(a4)  /* serper -> 115200 baud */
-1:      move.w  0x18(a4),d1
+        move.w  #0x1e,0xdff032  /* serper -> 115200 baud */
+1:      move.w  0xdff018,d1
         and.w   #0x2000,d1      /* serdatr -> busy? */
         jeq     1b
         and.w   #0xff,d0
         or.w    #0x100,d0
-        move.w  d0,0x30(a4)     /* serdat */
+        move.w  d0,0xdff030     /* serdat */
         rts
 
 dbg_puts:
