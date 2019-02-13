@@ -11,6 +11,7 @@ used with a Gotek programmed with FlashFloppy >= v1.0.
 Other features:
  * Boot from external Gotek (requires Kickstart v2 or later)
  * Approx 2x faster load times
+ * Bug fixes
 
 Getting Started
 ---------------

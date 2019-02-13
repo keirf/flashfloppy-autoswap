@@ -114,6 +114,14 @@ FTP server or Google Drive, and simply be unzipped as-is into the
 **monkey2/** folder in this Git repository:
 **monkey2/MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf** and so on.
 
+### Mortal Kombat
+
+The Fairlight crack is required
+(**Mortal Kombat (1993)(Acclaim)[cr FLT](Disk x of 3).adf**).
+These should be copied to the folder **MortalKombat/FL_Crack** in
+this Git repository. The ADF files should be named mk_01.adf, mk_02.adf
+and mk_03.adf.
+
 ## Building everything
 
 With everything set up, building the set of patched game titles for
