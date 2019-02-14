@@ -1,6 +1,6 @@
-Mortal Kombat: FlashFloppy AutoSwap v1.0
+Mortal Kombat: FlashFloppy AutoSwap v1.1
 ========================================
--- Keir Fraser, 12th February 2019
+-- Keir Fraser, 14th February 2019
 
 Introduction
 ------------
@@ -45,8 +45,7 @@ Feedback / Bug Reports
 Send to the Facebook group (https://www.facebook.com/flashfloppy) or
 raise an issue on Github (https://github.com/keirf/FlashFloppy).
 
-Credits
--------
+Special Thanks
+--------------
 
-Thanks to:
- - NOMAD/Fairlight for the original crack
+Thanks to NOMAD/Fairlight for the original crack.

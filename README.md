@@ -5,4 +5,4 @@
 
 ### [Read the Wiki](https://github.com/keirf/FF_AutoSwap/wiki)
 
-### [Credits](https://github.com/keirf/FF_AutoSwap/wiki/Credits)
+### [Special Thanks](https://github.com/keirf/FF_AutoSwap/wiki/Special-Thanks)

@@ -55,8 +55,8 @@ Feedback / Bug Reports
 Send to the Facebook group (https://www.facebook.com/flashfloppy) or
 raise an issue on Github (https://github.com/keirf/FlashFloppy).
 
-Credits
--------
+Special Thanks
+--------------
 
 Thanks to JOTD / WHDLoad for providing the source to his WHDLoad
 installer, from which I lifted his method of cracking the game.

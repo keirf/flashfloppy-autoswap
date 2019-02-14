@@ -72,8 +72,8 @@ Feedback / Bug Reports
 Send to the Facebook group (https://www.facebook.com/flashfloppy) or
 raise an issue on Github (https://github.com/keirf/FlashFloppy).
 
-Credits
--------
+Special Thanks
+--------------
 
 Thanks to:
  - ross/EAB for the special bootblock to reclaim chip memory
