@@ -1,7 +1,18 @@
+/*
+ * main_patch.S
+ * 
+ * FlashFloppy AutoSwap main game code patch for Mortal Kombat.
+ *
+ * Written & released by Keir Fraser <keir.xen@gmail.com>
+ * 
+ * This is free and unencumbered software released into the public domain.
+ * See the file COPYING for more details, or visit <http://unlicense.org>.
+ */
 
-#define local_drive  /*0*/
-#define local_cyl    2
-#define local_text   4
+/* Offsets into variable list. */
+#define var_drive  /*0*/ /* Boot drive unit number */
+#define var_cyl    2     /* Current drive head position (cylinder) */
+#define var_text   4     /* Start of main game code (for patches and jumps) */
 
         /* We patch the Copylock entry point, so first thing is to
          * branch at our bypass code. */
@@ -17,25 +28,23 @@ autoswap_init:
 
         movem.l d0-d5/a0-a6,-(sp)
 
-        lea     locals(pc),a5
+        lea     vars(pc),a5
+        move.l  a1,var_text(a5)
         
         /* Get boot drive number from first loader. */
         move.l  d7,a0
         moveq   #0,d0
         move.b  0xbdb-0x29e(a0),d0
-        move.w  d0,local_drive(a5)
+        move.w  d0,var_drive(a5)
 
-        /* Find start address of main game executable. */
-        move.l  d6,a0
-        lea.l   -0x36(a0),a0
-        move.l  a0,local_text(a5)
-
+        /* Set up the AutoSwap subsystem. */
         lea.l   (0x7ccc0).l,a0   /* trackbuf */
+        moveq   #0,d1            /* disk 0 */
         jbsr    check_ff_unit
-        lea     locals(pc),a5
+        lea     vars(pc),a5
 
         /* RNC sector loader: boot drive responds as unit 0. */
-        move.l  local_text(a5),a0
+        move.l  var_text(a5),a0
         lea.l   0x6f3a(a0),a1
         lea.l   rnc_fixup_entry(pc),a2
         jbsr    emit_bsr_w
@@ -68,10 +77,10 @@ autoswap_init:
 
 #include "shared_patch.S"
 
-locals:
-        dc.w    0
-        dc.w    0
-        dc.l    0
+vars:
+        dc.w    0 /* var_drive */
+        dc.w    0 /* var_cyl */
+        dc.l    0 /* var_text */
 
 /* Trivial Copylock bypass. */
 fix_copylock:
@@ -82,7 +91,7 @@ fix_copylock:
 rnc_fixup_entry:
         /* Restore the current head position into RNC local stack frame. */
         clr.w   -0x28(a2)       /* no buffered track */
-        move.w  locals+local_cyl(pc),-0x26(a2) /* current cyl */
+        move.w  vars+var_cyl(pc),-0x26(a2) /* current cyl */
         /* Drive 0 requested? Bail if not. */
         tst.w   d0
         jne     _loader_fail
@@ -107,7 +116,7 @@ rnc_fixup_entry:
         jra     _loader_out
 _loader_run:
         /* Jump back into the RNC loader, loading from the boot-drive unit. */
-        move.w  locals/*+local_drive*/(pc),d0
+        move.w  vars/*+var_drive*/(pc),d0
         rts
 _loader_fail:
         moveq   #0x1d,d0
@@ -118,16 +127,16 @@ _loader_out:
 
 /* Fix up on common exit path from RNC loader. */
 rnc_fixup_exit:
-        lea     locals(pc),a0
+        lea     vars(pc),a0
         /* Save the current head position for the next RNC invocation. */
-        move.w  -0x26(a2),local_cyl(a0)
+        move.w  -0x26(a2),var_cyl(a0)
         /* Jump at the routine we were patched over. */
-        move.l  local_text(a0),a0
+        move.l  var_text(a0),a0
         jmp     0x7076(a0)
         
 /* Seek to cylinder 0 when a normal disk access fails. */
 loader_fix_retry:
-        move.l  locals+local_text(pc),a1
+        move.l  vars+var_text(pc),a1
         jsr     0x6ebe(a1)      /* what we patched over */
         jeq     1f
         /* Read failed: seek back to cylinder 0. */
@@ -135,8 +144,8 @@ loader_fix_retry:
         lea     (0xDFF000).l,a4
         lea     (0xBFD100).l,a5
         jbsr    seek_0
-        lea     locals(pc),a0
-        clr.w   local_cyl(a0)
+        lea     vars(pc),a0
+        clr.w   var_cyl(a0)
         movem.l (sp)+,d0-d4/a0-a6
         tst.w   d0
 1:      rts
@@ -146,15 +155,15 @@ fix_diskswap:
         movem.l d0-d7/a0-a6,-(sp)
         /* Swizzle the trackbuf. */
         lea.l   (0x7ccc0).l,a1   /* trackbuf */
-        move.l  locals+local_text(pc),a0
+        move.l  vars+var_text(pc),a0
         jsr     0x6e36(a0)       /* swizzle trackbuf */
         /* Request disk swap. */
         move.l  a1,a0
-        move.w  locals/*+local_drive*/(pc),d0
+        move.w  vars/*+var_drive*/(pc),d0
         jbsr    disk_swap
         /* Swap request leaves us at cyl 0. */
-        lea.l   locals(pc),a5
-        clr.w   local_cyl(a5)
+        lea.l   vars(pc),a5
+        clr.w   var_cyl(a5)
         /* Read ID sector into our cache. */
         moveq   #0,d0
         moveq   #0x18,d1
@@ -163,7 +172,7 @@ fix_diskswap:
         lea.l   id_sector(pc),a0
         clr.l   (a0)
         lea.l   (0x7ccc0).l,a1   /* trackbuf */
-        move.l  local_text(a5),a2
+        move.l  var_text(a5),a2
         jsr     0x6f26(a2)       /* RNC_load */
         /* Unswizzle the trackbuf. */
         move.l  a2,a0
@@ -174,5 +183,6 @@ fix_diskswap:
 #include "../shared/autoswap.S"
 
         .balign 2
+/* Cached copy of current disk's sector 0x18 (Disk-ID/File-Table). */
 id_sector:
         ds.b    512

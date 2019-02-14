@@ -1,3 +1,16 @@
+/*
+ * shared_patch.S
+ * 
+ * FlashFloppy AutoSwap common patch code for Mortal Kombat.
+ * Referenced in both the bootblock and main game code.
+ *
+ * Written & released by Keir Fraser <keir.xen@gmail.com>
+ * 
+ * This is free and unencumbered software released into the public domain.
+ * See the file COPYING for more details, or visit <http://unlicense.org>.
+ */
+
+/* Emit BSR.w (a2) at EA (a1). */
 emit_bsr_w:
         move.w  #0x6100,(a1)+
 _emit:
@@ -5,13 +18,17 @@ _emit:
         sub.l   a1,d0
         move.w  d0,(a1)+
         rts
-        
+
+/* Emit BRA.w (a2) at EA (a1). */
 emit_bra_w:
         move.w  #0x6000,(a1)+
         jra     _emit
 
-        /* IN: a0=code, d0=step_speed
-         * Scratches: a1-a2/d0 */
+/* Fixes up the stripped-down RNC sector loader for faster track reads:
+ *   1. Reads can start from any sector, not just sector 0
+ *   2. Seek latency can be adjusted (specified by caller)
+ * IN: a0=code, d0=step_delay (in units of 10*cpu_cycle_time).
+ * Scratches: a1-a2/d0 */
 rnc_speed_patch:
         /* Modify the seek latency. */
         move.b  d0,0x1cb(a0)

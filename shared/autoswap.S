@@ -43,7 +43,7 @@
 #define buffer_len     (1080+512) /* 1592 bytes */
 
         /**************************
-         * d0 = drive #, d1 = disk #, a0 = trackbuf
+         * d0.b = drive #, d1.b = disk #, a0 = trackbuf
          * Scratches: d0-d4/a0-a6 */
 disk_swap:
         /*movem.l d0-d4/a0-a6,-(sp)*/
@@ -92,7 +92,7 @@ setup_state:
         jra     crc16_ccitt_gentable
 
         /**************************
-         * d0 = drive#, a0 = trackbuf
+         * d0.b = drive #, d1.b = disk #, a0 = trackbuf
          * Scratches: d0-d4/a0-a6 */
 check_ff_unit:
         /*movem.l d0-d4/a0-a6,-(sp)*/
@@ -133,10 +133,12 @@ _check_status:
 
         /* Parse the image name string (a0). */
         lea.l   image_name(pc),a1
+        moveq   #'0',d3
+        add.b   as_disk(a6),d3
         moveq   #0,d2
         moveq   #31,d1
 2:      move.b  (a0)+,d0
-        cmp.b   #'0',d0
+        cmp.b   d3,d0
         jne     1f
         addq.w  #1,d2
         moveq   #-1,d0                /* Disk number -> '\xff' */
@@ -264,8 +266,7 @@ motors_off:
         rts
 
         /**************************
-         * IN: d2.b = cyl
-         * Scratches: d0-d3 */
+         * Scratches: d0-d1 */
 seek_0:
         /* Find the current cylinder by counting steps out to cyl 0. */
         bset    #1,ciabprb(a5)  /* outwards */
@@ -290,6 +291,7 @@ seek_da:
         dbf     d4,1b
 3:      rts
 
+        /* Scratches: d0-d1 */
 _step_one:
         moveq   #0,d0
         bclr    d0,ciabprb(a5)
