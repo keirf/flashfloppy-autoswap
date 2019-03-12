@@ -470,8 +470,7 @@ static LONG send_dos_msg(LONG type, LONG arg)
 
 static void disk_busy(bool_t lock)
 {
-    if (lock)
-        send_dos_msg(ACTION_FLUSH, 0);
+    send_dos_msg(ACTION_FLUSH, 0);
     send_dos_msg(ACTION_INHIBIT, lock ? DOSTRUE : DOSFALSE);
 }
 
