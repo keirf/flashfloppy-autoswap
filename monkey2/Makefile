@@ -16,14 +16,17 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = Monkey2-FFAS
-VER = v1.4
+VER = v1.5
 NAME_PREFIX = Monkey2 - 
 
-all: mi2_01.adf
+all: mi2_01.adf mi2_01_alt.adf
 	rm -rf $(TARGET)*
 	mkdir -p $(TARGET)
 	xdftool "$(TARGET)/$(NAME_PREFIX)Save.adf" format "Monkey2 Save"
-	cp $< "$(TARGET)/$(NAME_PREFIX)01.adf"
+	cp mi2_01.adf "$(TARGET)/$(NAME_PREFIX)01.adf"
+	cp mi2_01_alt.adf "$(NAME_PREFIX)01.adf"
+	zip "$(TARGET)/monkey2_alt_boot.zip" "$(NAME_PREFIX)01.adf"
+	rm -f "$(NAME_PREFIX)01.adf"
 	cp MonkeyIsland2Kixx/MonkeyIsland2Disk2.adf "$(TARGET)/$(NAME_PREFIX)02.adf"
 	cp MonkeyIsland2Kixx/MonkeyIsland2Disk3.adf "$(TARGET)/$(NAME_PREFIX)03.adf"
 	cp MonkeyIsland2Kixx/MonkeyIsland2Disk4.adf "$(TARGET)/$(NAME_PREFIX)04.adf"
@@ -36,6 +39,13 @@ all: mi2_01.adf
 	cp MonkeyIsland2Kixx/MonkeyIsland2Disk11.adf "$(TARGET)/$(NAME_PREFIX)11.adf"
 	cp 00-README.txt $(TARGET)/.
 	zip -r $(TARGET)-$(VER).zip $(TARGET)
+
+mi2_01_alt.adf: mi2_01.adf monkey2_alt.zip
+	xdftool $< unpack .
+	unzip -o monkey2_alt.zip -d "Monkey2 Disk 1"
+	rm -rf $@
+	xdftool $@ pack "Monkey2 Disk 1"
+	rm -rf "Monkey2 Disk 1"*
 
 mi2_01.adf: MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf mi2_autoswap
 	rm -rf "Monkey2 Disk 1"*
