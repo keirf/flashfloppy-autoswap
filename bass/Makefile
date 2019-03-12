@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = SteelSky-FFAS
-VER = v1.3
+VER = v1.4
 NAME_PREFIX = SteelSky - 
 
 all: bass_00.adf

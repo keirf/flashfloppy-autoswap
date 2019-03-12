@@ -1,6 +1,6 @@
-Beneath a Steel Sky: FlashFloppy AutoSwap v1.3
+Beneath a Steel Sky: FlashFloppy AutoSwap v1.4
 ==============================================
--- Keir Fraser, 1st February 2019
+-- Keir Fraser, 12th March 2019
 
 Introduction
 ------------

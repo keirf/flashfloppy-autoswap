@@ -1,6 +1,6 @@
-Indiana Jones and the Fate of Atlantis: FlashFloppy AutoSwap v1.3
+Indiana Jones and the Fate of Atlantis: FlashFloppy AutoSwap v1.4
 =================================================================
--- Keir Fraser, 1st February 2019
+-- Keir Fraser, 12th March 2019
 
 Introduction
 ------------
@@ -48,6 +48,13 @@ If you wish to use your own save-game disk, you must replace the
 provided one, using the same image name, and the AmigaDOS disk label
 *must* be "atlantis0". You can use the RELABEL command in the Amiga
 Shell/CLI to set the disk label.
+
+Other Issues
+------------
+
+Mouse pointer may be vertically misaligned (too high on the screen)
+with Kickstart v3 and later. This is fixed by downgrading Kickstart
+(eg. use a kickstart switcher; or Relokick, if there's sufficient RAM).
 
 Feedback / Bug Reports
 ----------------------
