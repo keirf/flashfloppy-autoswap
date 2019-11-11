@@ -1,9 +1,5 @@
 
-/* df0:savegame.000 etc */
-/* atlantis1:atlantis.000 etc */
-/* atlantis1:amiga1.ims etc */
-
-#define VOLNAME_PREFIX "gob"
+#define VOLNAME_PREFIX "Gobliiins"
 
 #include "../shared/amigados_autoswap.c"
 
@@ -12,22 +8,13 @@ static int disknr_from_filename(const char *name)
     int disknr = 1;
     char *p;
    
-
-    if ((p = strstr(name, "azerty")) != NULL) {
-        disknr = 1;
-    } else if ((p = strstr(name, "INTRO.STK")) != NULL) {
-        disknr = 1;
-    } else if ((p = strstr(name, "JEULET1.LET]")) != NULL) {
-        disknr = 1;
-    } else if ((p = strstr(name, "JEULET2.LET]")) != NULL) {
-        disknr = 1;
-    } else if ((p = strstr(name, "JEUMATH.LET")) != NULL) {
-        disknr = 1;
-    } else if ((p = strstr(name, "DISK1.STK")) != NULL) {
+    if ((p = strstr(name, "DISK1.STK")) != NULL) {
         disknr = 2;
     } else if ((p = strstr(name, "DISK2.STK")) != NULL) {
         disknr = 2;
     } else if ((p = strstr(name, "DISK3.STK")) != NULL) {
+        disknr = 3;
+    } else if ((p = strstr(name, "DISK4.STK")) != NULL) {
         disknr = 3;
     }
 

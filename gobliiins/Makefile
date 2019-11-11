@@ -15,24 +15,25 @@ AFLAGS += $(CFLAGS) -D__ASSEMBLY__ -Wa,--register-prefix-optional
 AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
-TARGET = GobliiinsADF
-VER = v0.1
-NAME_PREFIX = gob
+TARGET = Gobliiins-FFAS
+VER = v1.0
+NAME_PREFIX = Gobliiins - 
 
 all: gob01.adf
 	rm -rf $(TARGET)*
 	mkdir -p $(TARGET)
 	cp $< "$(TARGET)/$(NAME_PREFIX)01.adf"
-	cp Orig/Gobliiins02.adf "$(TARGET)/$(NAME_PREFIX)02.adf"
-	cp Orig/Gobliiins03.adf "$(TARGET)/$(NAME_PREFIX)03.adf"
+	cp CSL_Crack/Gobliiins02.adf "$(TARGET)/$(NAME_PREFIX)02.adf"
+	cp CSL_Crack/Gobliiins03.adf "$(TARGET)/$(NAME_PREFIX)03.adf"
+	cp 00-README.txt $(TARGET)/.
 	zip -r $(TARGET)-$(VER).zip $(TARGET)
 
-gob01.adf: Orig/Gobliiins01.adf gob_autoswap
+gob01.adf: CSL_Crack/Gobliiins01.adf gob_autoswap
 	rm -rf Gobliiins1*
-	xdftool Orig/Gobliiins01.adf unpack .
+	xdftool CSL_Crack/Gobliiins01.adf unpack .
 	cp gob_autoswap Gobliiins1/.
 	cp Echo Gobliiins1/.
-	sed -i '1s/^/echo "Flash Floppy Autoswap"\nc:gob_autoswap\n/' Gobliiins1/s/startup-sequence
+	sed -i '1s/^/echo "Gobliiins FlashFloppy Autoswap $(VER)"\nc:gob_autoswap\n/' Gobliiins1/s/startup-sequence
 	rm -rf $@
 	xdftool $@ pack Gobliiins1
 	rm -rf Gobliiins1*
