@@ -33,11 +33,13 @@ Flashback_Disk1.adf: Orig/Flashback_Disk1.adf flash_autoswap
 	xdftool Orig/Flashback_Disk1.adf unpack .
 	cp flash_autoswap flashback\ disk\ 1/.
 
-	sed -i '1s/^/flash_autoswap\n/' flashback\ disk\ 1/s/startup-sequence
+	$(PYTHON) ../pack/pack_exe.py "flashback disk 1/FlashBack" flashback.pack
+	rm "flashback disk 1/FlashBack"
+	mv flashback.pack "flashback disk 1/FlashBack"
 	rm -rf $@
-	rm flashback\ disk\ 1/InstallScript
-	rm flashback\ disk\ 1/InstallFlashback
-	rm flashback\ disk\ 1/InstallFlashback.info
+
+	sed -i '1s/^/flash_autoswap\n/' flashback\ disk\ 1/s/startup-sequence
+
 	xdftool $@ pack flashback\ disk\ 1
 	rm -rf flashback\ disk\ 1*
 

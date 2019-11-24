@@ -640,6 +640,8 @@ void c_Open(uint32_t d1, uint32_t d2)
 
     disknr = disknr_from_filename(name);
 
+    if (disknr == -1) goto out;
+
     if (!disk_change(disknr))
         goto out;
 
@@ -839,3 +841,4 @@ fail:
  * indent-tabs-mode: nil
  * End:
  */
+

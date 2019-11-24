@@ -5,7 +5,7 @@
 
 #define VOLNAME_PREFIX "flash"
 
-#include "amigados_autoswap.c"
+#include "../shared/amigados_autoswap.c"
 
 static int disknr_from_filename(const char *name)
 {
