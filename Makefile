@@ -1,4 +1,4 @@
-SUBDIRS := atlantis bass monkey1 monkey2 MortalKombat gobliiins
+SUBDIRS := atlantis bass monkey1 monkey2 MortalKombat gobliiins Flashback
 
 .PHONY: all write clean $(SUBDIRS)
 all: $(SUBDIRS)

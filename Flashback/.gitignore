@@ -1,0 +1,6 @@
+/flash_autoswap
+/flash_autoswap_*
+/libnix.c
+/crc.c
+/Orig/
+/Flashback*
