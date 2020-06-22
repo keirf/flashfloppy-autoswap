@@ -16,7 +16,7 @@
         /* All registers preserved.
          * Disables caches and sets VBR to zero. */
 disable_caches:
-        movem.l a0-a6/d0,-(sp)
+        movem.l a0-a6/d0-d1,-(sp)
 
         moveq   #0,d0
         lea     _trap_disable_caches(pc),a5
@@ -39,16 +39,20 @@ disable_caches:
 
         jsr     Exec_Enable(a6)
 
-        movem.l (sp)+,a0-a6/d0
+        movem.l (sp)+,a0-a6/d0-d1
         rts
 
 _super_disable_caches:
         /*dc.l    0x4e7a1801*/    /* movec vbr,d1  */
         dc.l    0x4e7b0801        /* movec d0,vbr  */
-        dc.l    0xf4784e71        /* cpusha dc     */
-        dc.l    0x4e7b0002        /* movec d0,cacr */
+        tst.b   d0                /* set CCR.ZF */
+        dc.l    0x4e7a1004        /* movec itt0,d1 */ /* 68040+ only */
+        jne     1f                /* Skip CPUSHA if MOVEC ITT0 failed  */
+        dc.l    0xf4784e71        /* cpusha dc     */ /* 68040+ only */
+1:      dc.l    0x4e7b0002        /* movec d0,cacr */
         dc.l    0x4e7b0808        /* movec d0,pcr  */
         rte
 _trap_disable_caches:
+        and.w   #~4,(sp)          /* clear CCR_ZF */
         addq.l  #4,2(sp)
         rte

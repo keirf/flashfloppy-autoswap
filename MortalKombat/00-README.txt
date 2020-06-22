@@ -1,6 +1,6 @@
-Mortal Kombat: FlashFloppy AutoSwap v1.1
+Mortal Kombat: FlashFloppy AutoSwap v1.2
 ========================================
--- Keir Fraser, 14th February 2019
+-- Keir Fraser, 22nd June 2020
 
 Introduction
 ------------
