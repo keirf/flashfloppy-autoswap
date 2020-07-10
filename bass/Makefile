@@ -91,15 +91,16 @@ bass_autoswap_entry.S: ../shared/amigados_autoswap_entry.S
 clean:
 	rm -rf *.o *.adf bass_autoswap $(DEPS) $(TARGET)* bass_autoswap_* crc.c libnix.c disk_15* atlantis1*
 
+DRIVE ?= /dev/sdb1
 write: all
-	sudo mount /dev/sdd1 /mnt
+	sudo mount $(DRIVE) /mnt
 	sudo rm -rf /mnt/$(TARGET)
 	sudo cp -r $(TARGET) /mnt/.
 	echo -n "$(TARGET)/$(NAME_PREFIX)01.adf" >IMAGE_A.CFG
 	sudo cp IMAGE_A.CFG /mnt/.
 	rm -f IMAGE_A.CFG
 	sudo umount /mnt
-	sudo fatsort /dev/sdd1
+	sudo fatsort $(DRIVE)
 
 .PHONY: all clean write
 

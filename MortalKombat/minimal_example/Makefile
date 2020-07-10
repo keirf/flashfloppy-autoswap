@@ -42,15 +42,16 @@ main_patch: main_patch.o
 clean:
 	rm -rf *.o *.adf main_patch $(DEPS) $(TARGET)*
 
+DRIVE ?= /dev/sdb1
 write: all
-	sudo mount /dev/sdd1 /mnt
+	sudo mount $(DRIVE) /mnt
 	sudo rm -rf /mnt/$(TARGET)
 	sudo cp -r $(TARGET) /mnt/.
 	echo -n "$(TARGET)/$(NAME_PREFIX)0.adf" >IMAGE_A.CFG
 	sudo cp IMAGE_A.CFG /mnt/.
 	rm -f IMAGE_A.CFG
 	sudo umount /mnt
-	sudo fatsort /dev/sdd1
+	sudo fatsort $(DRIVE)
 
 .PHONY: all clean write
 
