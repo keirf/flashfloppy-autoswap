@@ -1,4 +1,4 @@
-Gobliiins: FlashFloppy AutoSwap v1.0
+Gobliiins: FlashFloppy AutoSwap v1.1
 ====================================
 
 Introduction

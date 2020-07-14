@@ -1,4 +1,4 @@
-Mortal Kombat: FlashFloppy AutoSwap v1.2
+Mortal Kombat: FlashFloppy AutoSwap v1.3
 ========================================
 -- Keir Fraser, 22nd June 2020
 
@@ -11,6 +11,7 @@ used with a Gotek programmed with FlashFloppy >= v1.0.
 Other features:
  * Boot from external Gotek (requires Kickstart v2 or later)
  * Approx 2x faster load times
+ * Switch to NTSC mode by pressing LMB or fire button during boot
  * Bug fixes
 
 Getting Started

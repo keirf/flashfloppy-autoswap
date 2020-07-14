@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = Monkey2-FFAS
-VER = v1.5
+VER = v1.6
 NAME_PREFIX = Monkey2 - 
 
 all: mi2_01.adf mi2_01_alt.adf
@@ -57,6 +57,7 @@ mi2_01.adf: MonkeyIsland2Kixx/MonkeyIsland2Disk1.adf mi2_autoswap
 	rm -rf $@
 	xdftool $@ pack "Monkey2 Disk 1"
 	rm -rf "Monkey2 Disk 1"*
+	$(PYTHON) ../shared/bootblock_fix.py --ntsc-patch $@
 
 mi2_autoswap: mi2_autoswap_1 mi2_autoswap_2
 	$(PYTHON) ../shared/hunk_cat.py -o $@ $^

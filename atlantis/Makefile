@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = FateOfAtlantis-FFAS
-VER = v1.4
+VER = v1.5
 NAME_PREFIX = Atlantis - 
 
 all: atlantis_01.adf
@@ -48,6 +48,7 @@ atlantis_01.adf: Orig/atlantis_01.adf atlantis_autoswap
 	rm -rf $@
 	xdftool $@ pack atlantis1
 	rm -rf atlantis1*
+	$(PYTHON) ../shared/bootblock_fix.py --ntsc-patch $@
 
 atlantis_autoswap: atlantis_autoswap_1 atlantis_autoswap_2
 	$(PYTHON) ../shared/hunk_cat.py -o $@ $^

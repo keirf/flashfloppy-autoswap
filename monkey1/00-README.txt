@@ -1,4 +1,4 @@
-The Secret of Monkey Island: FlashFloppy AutoSwap v1.4
+The Secret of Monkey Island: FlashFloppy AutoSwap v1.5
 ======================================================
 -- Keir Fraser, 12th March 2019
 

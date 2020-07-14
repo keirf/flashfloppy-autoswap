@@ -1,4 +1,4 @@
-Monkey Island 2, LeChuck's Revenge: FlashFloppy AutoSwap v1.5
+Monkey Island 2, LeChuck's Revenge: FlashFloppy AutoSwap v1.6
 =============================================================
 -- Keir Fraser, 12th March 2019
 
@@ -60,6 +60,11 @@ Another workaround is to boot from the supplied alternative Disk-1
 image (unzip "monkey2_alt_boot.zip" over the old boot disk). This
 version does not vertically centre the display on PAL systems, which
 seems to circumvent this issue.
+
+Alternatively, press LMB or Fire during boot to switch to NTSC mode
+(may not work reliably with all Kickstart versions). This works best
+witnh the alternative Disk-1 image, as it is vertically centred on
+NTSC screens.
 
 Feedback / Bug Reports
 ----------------------

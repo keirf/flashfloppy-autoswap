@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = Monkey1-FFAS
-VER = v1.4
+VER = v1.5
 NAME_PREFIX = Monkey1 - 
 
 all: mi1_01.adf
@@ -45,6 +45,7 @@ mi1_01.adf: Orig/mi_01.adf ../atlantis/Orig/atlantis_01.adf mi1_autoswap
 	rm -rf $@
 	xdftool $@ pack Monkey1
 	rm -rf Monkey1* atlantis1*
+	$(PYTHON) ../shared/bootblock_fix.py --ntsc-patch $@
 
 mi1_autoswap: mi1_autoswap_1 mi1_autoswap_2
 	$(PYTHON) ../shared/hunk_cat.py -o $@ $^

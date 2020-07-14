@@ -9,7 +9,14 @@
  * See the file COPYING for more details, or visit <http://unlicense.org>.
  */
 
-        /* Find boot drive */
+        /* Switch to NTSC mode if FIRE0 or FIRE1 is pressed. */
+        move.b  (0xbfe001).l,d0
+        not.b   d0
+        and.b   #0xc0,d0
+        jeq     1f
+        move.w  #0,(0xdff1dc).l         /* clear the BEAMCON0 PAL flag */
+
+1:      /* Find boot drive */
         jbsr    CheckDrives
 
         /* Patch the first loader to use the boot drive. */

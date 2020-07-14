@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = Gobliiins-FFAS
-VER = v1.0
+VER = v1.1
 NAME_PREFIX = Gobliiins - 
 
 all: gob01.adf
@@ -37,6 +37,7 @@ gob01.adf: CSL_Crack/Gobliiins01.adf gob_autoswap
 	rm -rf $@
 	xdftool $@ pack Gobliiins1
 	rm -rf Gobliiins1*
+	$(PYTHON) ../shared/bootblock_fix.py --ntsc-patch $@
 
 gob_autoswap: gob_autoswap_1 gob_autoswap_2
 	$(PYTHON) ../shared/hunk_cat.py -o $@ $^

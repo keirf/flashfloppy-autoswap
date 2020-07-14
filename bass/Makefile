@@ -16,7 +16,7 @@ AFLAGS += -Wa,-l -Wa,--bitwise-or -Wa,--base-size-default-16
 AFLAGS += -Wa,--disp-size-default-16 -Wa,--pcrel
 
 TARGET = SteelSky-FFAS
-VER = v1.4
+VER = v1.5
 NAME_PREFIX = SteelSky - 
 
 all: bass_00.adf
@@ -58,6 +58,7 @@ bass_00.adf: Orig/bass_00.adf ../atlantis/Orig/atlantis_01.adf bass_autoswap bas
 	rm -rf $@
 	xdftool $@ pack disk_15
 	rm -rf disk_15* atlantis1*
+	$(PYTHON) ../shared/bootblock_fix.py --ntsc-patch $@
 
 bass_autoswap: bass_autoswap_1 bass_autoswap_2
 	$(PYTHON) ../shared/hunk_cat.py -o $@ $^
