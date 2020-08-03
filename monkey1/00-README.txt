@@ -49,6 +49,18 @@ provided one, using the same image name, and the AmigaDOS disk label
 *must* be "MonkeySave". You can use the RELABEL command in the Amiga
 Shell/CLI to set the disk label.
 
+NTSC
+----
+
+For centred vertical alignment of the screen in NTSC/60Hz mode, you
+may wish to boot from the supplied alternative Disk-1
+image (unzip "monkey1_alt_boot.zip" over the old boot disk).
+
+Press LMB or Fire during boot to switch PAL systems to NTSC mode
+(may not work reliably with all Kickstart versions). This works best
+witnh the alternative Disk-1 image, as it is vertically centred on
+NTSC screens.
+
 Feedback / Bug Reports
 ----------------------
 

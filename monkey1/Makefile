@@ -19,16 +19,31 @@ TARGET = Monkey1-FFAS
 VER = v1.5
 NAME_PREFIX = Monkey1 - 
 
-all: mi1_01.adf
+all: mi1_01.adf mi1_01_alt.adf
 	rm -rf $(TARGET)*
 	mkdir -p $(TARGET)
 	xdftool "$(TARGET)/$(NAME_PREFIX)Save.adf" format "MonkeySave"
-	cp $< "$(TARGET)/$(NAME_PREFIX)01.adf"
+	cp mi1_01.adf "$(TARGET)/$(NAME_PREFIX)01.adf"
+	cp mi1_01_alt.adf "$(NAME_PREFIX)01.adf"
+	zip "$(TARGET)/monkey1_alt_boot.zip" "$(NAME_PREFIX)01.adf"
+	rm -f "$(NAME_PREFIX)01.adf"
 	cp Orig/mi_02.adf "$(TARGET)/$(NAME_PREFIX)02.adf"
 	cp Orig/mi_03.adf "$(TARGET)/$(NAME_PREFIX)03.adf"
 	cp Orig/mi_04.adf "$(TARGET)/$(NAME_PREFIX)04.adf"
 	cp 00-README.txt $(TARGET)/.
 	zip -r $(TARGET)-$(VER).zip $(TARGET)
+
+mi1_01_alt.adf: mi1_01.adf monkey1_alt.zip
+	unzip monkey1_alt.zip
+	rm -rf Monkey1*
+	xdftool mi1_01_alt_orig.adf unpack .
+	cp mi1_autoswap Monkey1/c/.
+	rm Monkey1/c/Copy
+	cp startup-sequence.alt Monkey1/s/startup-sequence
+	rm -rf $@
+	xdftool $@ pack Monkey1
+	rm -rf Monkey1*
+	$(PYTHON) ../shared/bootblock_fix.py --ntsc-patch $@
 
 mi1_01.adf: Orig/mi_01.adf ../atlantis/Orig/atlantis_01.adf mi1_autoswap
 	rm -rf Monkey1* atlantis1*
